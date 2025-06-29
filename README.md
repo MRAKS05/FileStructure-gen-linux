@@ -19,14 +19,14 @@ Follow these steps to install the File Structure Generator:
     Use `git clone` to download the project files to your local machine. Replace `<repository_url>` with the actual URL of the GitHub repository.
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/MRAKS05/FileStructure-gen-linux.git
     ```
 
 2.  **Navigate to the project directory:**
     Change your current directory to the cloned repository folder.
 
     ```bash
-    cd <repository_folder_name>
+    cd FileStructure-gen-linux
     ```
 
 3.  **Run the installation script:**
