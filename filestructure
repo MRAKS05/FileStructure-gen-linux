@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Check if enough arguments were provided
+if [ $# -lt 3 ]; then
+    echo "Usage: $0 <folder> [-i|--ignore <folders>,...] [-g|--gitignore] [-f|--file <output_file>]"
+
+    # Describe the options
+    echo "  Options:"
+    echo "  -i, --ignore <folders>: Specify a comma-separated list of folders to ignore"
+    echo "  -g, --gitignore: Add a .gitignore file and use its contents to generate the structure"
+    echo "  -f, --file <output_file>: Specify the name of the output file (including extension)"
+
+    exit 1
+fi
+
+FOLDER=$1
+IGNORE_FOLDERS=""
+OUTPUT_FILE=""
+
+# Parse options
+while [ $# -gt 2 ]; do
+    case "$1" in
+        -i | --ignore)
+            IGNORE_FOLDERS="$2"
+            shift 2
+            ;;
+        -g | --gitignore)
+            git ignore $FOLDER > $OUTPUT_FILE
+            exit 0
+            ;;
+        -f | --file)
+            OUTPUT_FILE="$2"
+            shift 2
+            ;;
+        *)
+            echo "Invalid option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+# Generate file structure
+find "$FOLDER" -type f -print > "$OUTPUT_FILE" 2> /dev/null
+
+# Ignore certain folders if specified by the user
+if [ -n "$IGNORE_FOLDERS" ]; then
+    find "$FOLDER" -type d ! \( -path "*$IGNORE_FOLDERS*" \) -prune -print >> "$OUTPUT_FILE"
+fi
